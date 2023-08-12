@@ -1,7 +1,6 @@
 const sql = require("./db.js");
 const jwt = require('jsonwebtoken')
-// const GenerateJWT = require('../middleware/GenerateJWT.js')
-const GenerateJWT = require('../middleware/GenerateJWT.js')
+const {JWT_SECRET} = require('../../env.js')
 
 // constructor
 const User = function(user) {
@@ -55,17 +54,16 @@ User.login = (userDetails, result) => {
                 return
             }
             if (res.length > 0) {
-                GenerateJWT.genToken(res[0].id, res[0].email, res[0].name, (err, token) =>{
-                    result(
+                const JWT_token = jwt.sign({id: res[0].id, email:res[0].email, name:res[0].name}, JWT_SECRET,{ expiresIn: '300s' })
+                result(
                         null,
                         {
                             isSuccess:true,
                             message:"Login success",
                             data:res,
-                            token:token
+                            token:JWT_token
                         }
-                    )
-                })
+                )
                 return
             } else {
                 result(
@@ -81,8 +79,15 @@ User.login = (userDetails, result) => {
         }
     )
 }
-User.newfunc = (result) => {
-    result(null, "hello")
+
+User.findUserById = (id, result) => {
+    sql.query("select * from users where id = ?", [id], (err, data) => {
+        if (err) {
+            result(err, null)
+            return
+        }
+        result(null, data)
+    })
 }
 
 // Tutorial.findById = (id, result) => {

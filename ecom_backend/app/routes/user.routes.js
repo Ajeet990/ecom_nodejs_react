@@ -1,3 +1,5 @@
+const protectedRoute = require('../middleware/VerifyJWT')
+
 module.exports = app => {
     const user = require("../controllers/user.controller.js");
   
@@ -8,7 +10,7 @@ module.exports = app => {
     router.post("/signup", user.create);
   
     // // Retrieve all Tutorials
-    router.get("/getUsers", user.getAllUsers);
+    router.get("/getUsers", protectedRoute, user.getAllUsers);
     router.post("/login", user.login)
   
     // // Retrieve all published Tutorials
