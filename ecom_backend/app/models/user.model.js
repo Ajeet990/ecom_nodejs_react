@@ -1,5 +1,7 @@
 const sql = require("./db.js");
 const jwt = require('jsonwebtoken')
+// const GenerateJWT = require('../middleware/GenerateJWT.js')
+const GenerateJWT = require('../middleware/GenerateJWT.js')
 
 // constructor
 const User = function(user) {
@@ -19,7 +21,13 @@ User.create = (newUser, result) => {
     }
 
     // console.log("created user: ", { id: res.insertId, ...newUser });
-    result(null, { id: res.insertId, ...newUser });
+    result(
+        null,
+        {
+            isSuccess: true,
+            message:"Successfully registered"
+        }
+    );
   });
 };
 
@@ -38,7 +46,6 @@ User.getAllUsers = (result) => {
 }
 
 User.login = (userDetails, result) => {
-    let token = ""
     sql.query(
         "select * from users where email = ? and password = ?",
         [userDetails.email, userDetails.password],
@@ -48,21 +55,34 @@ User.login = (userDetails, result) => {
                 return
             }
             if (res.length > 0) {
-                jwt.sign(res, "2222", )
+                GenerateJWT.genToken(res[0].id, res[0].email, res[0].name, (err, token) =>{
+                    result(
+                        null,
+                        {
+                            isSuccess:true,
+                            message:"Login success",
+                            data:res,
+                            token:token
+                        }
+                    )
+                })
+                return
+            } else {
                 result(
                     null,
                     {
-                        message:"Login success",
-                        data:res,
-                        token:token
+                        isSuccess:false,
+                        message:"Email or password missmatched, please try again",
+                        data:[],
+                        token:null
                     }
                 )
-                return
-            } else {
-                result(null, {"message":"Email or password missmatched, please try again"})
             }
         }
     )
+}
+User.newfunc = (result) => {
+    result(null, "hello")
 }
 
 // Tutorial.findById = (id, result) => {
