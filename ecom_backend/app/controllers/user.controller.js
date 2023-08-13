@@ -46,6 +46,7 @@ exports.getAllUsers = (req, res) => {
 
 // Loging
 exports.login = (req, res) => {
+  console.log(req.body.email);
     const userloginCredentials = new User({
         email:req.body.email,
         password:req.body.password,
