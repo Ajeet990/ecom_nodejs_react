@@ -2,12 +2,34 @@ const protectedRoute = require('../middleware/VerifyJWT')
 
 module.exports = app => {
     const user = require("../controllers/user.controller.js");
-  
+    const multer = require('multer');
     var router = require("express").Router();
+
+    // file upload
+    const storage = multer.diskStorage({
+      destination:'./upload/users',
+      filename:(req, file, cb) => {
+          cb(null, `${file.originalname}`)
   
-    // Create a new Tutorial
-    // console.log("i am here")
-    router.post("/signup", user.create);
+      }
+    })
+    const upload = multer({
+      storage:storage,
+      limits:{fileSize:5000000}
+    })
+    // User can only upload profile picture upto 5 MB
+    function checkFileSize(err, req, res, next)
+    {
+        if (err instanceof multer.MulterError){
+            res.json({
+                isSuccess:0,
+                message:err.message
+            })
+            return
+        }
+        next()
+    }
+    router.post("/signup", upload.single('profile'), checkFileSize, user.create);
   
     // // Retrieve all Tutorials
     router.get("/getUsers", protectedRoute, user.getAllUsers);

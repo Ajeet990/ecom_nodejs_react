@@ -1,4 +1,5 @@
 const User = require("../models/user.model.js");
+const path = require('path')
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
@@ -17,10 +18,11 @@ exports.create = (req, res) => {
     password: req.body.password,
     address: req.body.address,
     phone: req.body.phone,
+    profile: req.file.originalname,
   });
 //   console.log(user);
 
-  // Save Tutorial in the database
+  // Save users in the database
   User.create(user, (err, data) => {
     if (err)
       res.status(500).send({
@@ -46,7 +48,8 @@ exports.getAllUsers = (req, res) => {
 
 // Loging
 exports.login = (req, res) => {
-  console.log(req.body.email);
+
+  // console.log(req.body.email);
     const userloginCredentials = new User({
         email:req.body.email,
         password:req.body.password,

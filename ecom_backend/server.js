@@ -17,9 +17,11 @@ app.use(express.json()); /* bodyParser.json() is deprecated */
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true })); /* bodyParser.urlencoded() is deprecated */
-app.use(upload.array()); 
+// app.use(upload.single()); //Using this allow us to accept data from form-data, raw and x-www-url-formencoded
 
 // simple route
+
+
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Ajeet application." });
 });

@@ -9,9 +9,11 @@ const User = function(user) {
   this.password = user.password;
   this.address = user.address;
   this.phone = user.phone;
+  this.profile = user.profile;
 };
 
 User.create = (newUser, result) => {
+    console.log(newUser);
   sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
     if (err) {
       console.log("error: ", err);
