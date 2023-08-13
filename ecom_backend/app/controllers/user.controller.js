@@ -1,17 +1,15 @@
 const User = require("../models/user.model.js");
 const path = require('path')
 
-// Create and Save a new Tutorial
+// Create and Save a new User
 exports.create = (req, res) => {
-    // Validate request
-    // console.log("hello from controller")
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
   }
 
-  // Create a Tutorial
+  // Create a User
   const user = new User({
     name: req.body.name,
     email: req.body.email,

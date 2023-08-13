@@ -2,7 +2,7 @@ const express = require("express");
 // const bodyParser = require("body-parser"); /* deprecated */
 const cors = require("cors");
 var multer = require('multer');// to upload files and to accept form-data fields
-var upload = multer();
+var uploadd = multer();
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.use(express.json()); /* bodyParser.json() is deprecated */
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true })); /* bodyParser.urlencoded() is deprecated */
-// app.use(upload.single()); //Using this allow us to accept data from form-data, raw and x-www-url-formencoded
+// app.use(uploadd.single()); //Using this allow us to accept data from form-data, raw and x-www-url-formencoded
 
 // simple route
 
