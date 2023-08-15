@@ -37,6 +37,13 @@ const Login = () => {
             axios.post(`http://localhost:8000/api/login`, loginDetail)
             .then((res) => {
                 if (res.data.isSuccess == true) {
+                    const userDetail = {
+                        userId:res.data.data[0].id,
+                        userName:res.data.data[0].name,
+                        userEmail:res.data.data[0].email,
+                        token:res.data.token
+                    }
+                    localStorage.setItem('userDetail', JSON.stringify(userDetail))
                     toast(res.data.message, {
                         position: "top-right",
                         type:'success',
